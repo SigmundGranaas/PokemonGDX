@@ -1,5 +1,7 @@
 package com.sigmund.pokemon.model;
 
+import com.sigmund.pokemon.Settings;
+
 public enum DIRECTION {
     NORTH(0,1),
     EAST(1,0),
@@ -8,7 +10,7 @@ public enum DIRECTION {
 
     private int dx, dy;
 
-    private DIRECTION(int dx, int dy){
+    DIRECTION(int dx, int dy){
         this.dx = dx;
         this.dy = dy;
     }
