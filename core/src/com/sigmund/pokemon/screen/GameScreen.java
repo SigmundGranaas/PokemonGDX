@@ -26,7 +26,7 @@ public class GameScreen extends AbstractScreen {
         redStandingSouth = new Texture("Red_standing_south.png");
 
         batch = new SpriteBatch();
-        map = new TileMap(10,10);
+        map = new TileMap(20,20);
         player = new Actor(map,0,0);
         controller = new PlayerController(player);
 

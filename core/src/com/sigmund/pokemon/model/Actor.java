@@ -23,7 +23,7 @@ public class Actor {
         this.state = ACTOR_STATE.STANDING;
         this.facing = DIRECTION.SOUTH;
         redStandingSouth = new Texture("Red_standing_south.png");
-        this.animation = new Animation<Texture>(0.5f,redStandingSouth);
+        this.animation = new Animation<Texture>(0.2f,redStandingSouth);
 
     }
 
@@ -61,6 +61,7 @@ public class Actor {
 
         initilaliseMove(dir);
         this.facing = dir;
+        System.out.println(destY + "," + destX);
         return true;
     }
 
@@ -68,15 +69,15 @@ public class Actor {
         state = ACTOR_STATE.WALKING;
         this.sourceX = x;
         this.sourceY = y;
-        this.destX = x + dir.getDx();
-        this.destY = y + dir.getDy();
+        this.destX = (x + dir.getDx()*Settings.TILE_SIZE);
+        this.destY = (y + dir.getDy()*Settings.TILE_SIZE);
         animtimer = 0f;
         return true;
     }
 
     public boolean completeMove(DIRECTION dir) {
-        x = destY;
-        y = destX;
+        x = destX;
+        y = destY;
         state = ACTOR_STATE.STANDING;
         this.sourceX = 0;
         this.sourceY = 0;
