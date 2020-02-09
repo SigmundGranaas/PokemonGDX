@@ -6,12 +6,14 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.sigmund.pokemon.PokemonGDX;
 import com.sigmund.pokemon.Settings;
 import com.sigmund.pokemon.controller.PlayerController;
 import com.sigmund.pokemon.model.Actor;
 import com.sigmund.pokemon.model.GameCamera;
 import com.sigmund.pokemon.model.TileMap;
+import com.sigmund.pokemon.utility.AnimationSet;
 
 public class GameScreen extends AbstractScreen {
     private TileMap map;
@@ -24,12 +26,23 @@ public class GameScreen extends AbstractScreen {
 
     public GameScreen(PokemonGDX app) {
         super(app);
+        TextureAtlas atlas = app.getAssetManager().get("textures.atlas", TextureAtlas.class);
+        AnimationSet animations = new AnimationSet(
+                new Animation(0.1f/2f, atlas.findRegions("REDwalknorth"), Animation.PlayMode.LOOP_PINGPONG),
+                new Animation(0.1f/2f, atlas.findRegions("REDwalkeast"), Animation.PlayMode.LOOP_PINGPONG),
+                new Animation(0.1f/2f, atlas.findRegions("REDwalkwest"), Animation.PlayMode.LOOP_PINGPONG),
+                new Animation(0.1f/2f, atlas.findRegions("REDwalksouth"), Animation.PlayMode.LOOP_PINGPONG),
+                atlas.findRegion("REDstandnorth"),
+                atlas.findRegion("REDstandwest"),
+                atlas.findRegion("REDstandeast"),
+                atlas.findRegion("REDstandsouth")
+        );
         Grass = new Texture("Grass.png");
         redStandingSouth = new Texture("Red_standing_south.png");
 
         batch = new SpriteBatch();
         map = new TileMap(20,20);
-        player = new Actor(map,0,0);
+        player = new Actor(map,0,0,animations);
         controller = new PlayerController(player);
         gameCamera = new GameCamera();
 
@@ -76,7 +89,7 @@ public class GameScreen extends AbstractScreen {
 
     }
 
-    batch.draw(player.getAnimTexture(),
+    batch.draw(player.getSPrite(),
             worldStartX+player.getAnimX(),
             worldStartY+player.getAnimY(),
             Settings.SCALED_TILE_SIZE,

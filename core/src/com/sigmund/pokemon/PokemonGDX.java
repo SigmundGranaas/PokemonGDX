@@ -14,7 +14,7 @@ public class PokemonGDX extends Game {
 	@Override
 	public void create () {
 		assetManager = new AssetManager();
-		assetManager.load("/packed/textures.atlas", TextureAtlas.class);
+		assetManager.load("textures.atlas", TextureAtlas.class);
 		assetManager.finishLoading();
 
 		screen = new GameScreen(this);

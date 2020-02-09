@@ -32,7 +32,8 @@ public class Actor {
         return animY;
     }
 
-    public Actor(TileMap map, int x, int y){
+    public Actor(TileMap map, int x, int y, AnimationSet animations){
+        this.animations = animations;
         this.map = map;
         this.x = x;
         this.y = y;
@@ -131,6 +132,7 @@ public class Actor {
     public Texture getAnimTexture(){
         return animation.getKeyFrame(animtimer);
     }
+
     public TextureRegion getSPrite(){
         if(state == ACTOR_STATE.WALKING){
             return (TextureRegion) animations.getWalking(facing).getKeyFrame(walkTimer);
