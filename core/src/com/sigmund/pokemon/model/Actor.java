@@ -1,11 +1,8 @@
 package com.sigmund.pokemon.model;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.sigmund.pokemon.Settings;
-import com.sigmund.pokemon.screen.GameScreen;
 import com.sigmund.pokemon.utility.AnimationSet;
 
 public class Actor {
@@ -15,8 +12,6 @@ public class Actor {
     private ACTOR_STATE state;
     private int sourceX, sourceY;
     private int destX, destY;
-    private Animation<Texture> animation;
-    private Texture redStandingSouth;
     private float walkTimer;
     private boolean moveRequestThisFrame;
     private float animtime = 0.2f;
@@ -39,12 +34,9 @@ public class Actor {
         this.y = y;
         this.state = ACTOR_STATE.STANDING;
         this.facing = DIRECTION.SOUTH;
-        redStandingSouth = new Texture("Red_standing_south.png");
-        this.animation = new Animation<Texture>(animtime,redStandingSouth);
 
 
     }
-
 
     public TileMap getMap() {
         return map;
@@ -70,7 +62,7 @@ public class Actor {
         animX = Interpolation.linear.apply(sourceX,destX,animtimer/animtime);
         animY = Interpolation.linear.apply(sourceY,destY,animtimer/animtime);
 
-        if(animtimer > animation.getAnimationDuration()){
+        if(animtimer > animtime){
             walkTimer = animtimer-animtime;
             completeMove(facing);
             if(moveRequestThisFrame){
@@ -130,9 +122,6 @@ public class Actor {
         return true;
     }
 
-    public Texture getAnimTexture(){
-        return animation.getKeyFrame(animtimer);
-    }
 
     public TextureRegion getSPrite(){
         if(state == ACTOR_STATE.WALKING){
@@ -145,4 +134,3 @@ public class Actor {
     }
 
 }
-
