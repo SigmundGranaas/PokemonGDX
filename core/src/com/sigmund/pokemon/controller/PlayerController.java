@@ -61,6 +61,18 @@ public class PlayerController extends InputAdapter {
     }
 
     public void update(float delta){
+        if(up&&left){
+            player.requestMove(DIRECTION.NORT_WEST);
+        }
+        if(down&&left){
+            player.requestMove(DIRECTION.SOUTH_WEST);
+        }
+        if(up&&right){
+            player.requestMove(DIRECTION.NORT_EAST);
+        }
+        if(down&&right){
+            player.requestMove(DIRECTION.SOUT_EAST);
+        }
         if(up){
             player.requestMove(DIRECTION.NORTH);
         }
@@ -73,6 +85,7 @@ public class PlayerController extends InputAdapter {
         if(right){
             player.requestMove(DIRECTION.EAST);
         }
+
         if(space){
             player.jump();
         }
