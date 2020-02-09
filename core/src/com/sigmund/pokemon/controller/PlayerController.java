@@ -73,16 +73,17 @@ public class PlayerController extends InputAdapter {
         if(down&&right){
             player.requestMove(DIRECTION.SOUT_EAST);
         }
-        if(up){
+
+        else if(up){
             player.requestMove(DIRECTION.NORTH);
         }
-        if(down){
+        else if(down){
             player.requestMove(DIRECTION.SOUTH);
         }
-        if(left){
+        else if(left){
             player.requestMove(DIRECTION.WEST);
         }
-        if(right){
+        else if(right){
             player.requestMove(DIRECTION.EAST);
         }
 
