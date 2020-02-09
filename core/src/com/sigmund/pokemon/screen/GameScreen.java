@@ -18,7 +18,6 @@ import com.sigmund.pokemon.utility.AnimationSet;
 public class GameScreen extends AbstractScreen {
     private TileMap map;
     private Texture Grass;
-    private Texture redStandingSouth;
     private Actor player;
     private SpriteBatch batch;
     private PlayerController controller;
@@ -28,17 +27,16 @@ public class GameScreen extends AbstractScreen {
         super(app);
         TextureAtlas atlas = app.getAssetManager().get("textures.atlas", TextureAtlas.class);
         AnimationSet animations = new AnimationSet(
-                new Animation(0.1f/2f, atlas.findRegions("REDwalknorth"), Animation.PlayMode.LOOP_PINGPONG),
-                new Animation(0.1f/2f, atlas.findRegions("REDwalkeast"), Animation.PlayMode.LOOP_PINGPONG),
-                new Animation(0.1f/2f, atlas.findRegions("REDwalkwest"), Animation.PlayMode.LOOP_PINGPONG),
-                new Animation(0.1f/2f, atlas.findRegions("REDwalksouth"), Animation.PlayMode.LOOP_PINGPONG),
+                new Animation(0.2f/2f, atlas.findRegions("REDwalknorth"), Animation.PlayMode.LOOP_PINGPONG),
+                new Animation(0.2f/2f, atlas.findRegions("REDwalkeast"), Animation.PlayMode.LOOP_PINGPONG),
+                new Animation(0.2f/2f, atlas.findRegions("REDwalkwest"), Animation.PlayMode.LOOP_PINGPONG),
+                new Animation(0.2f/2f, atlas.findRegions("REDwalksouth"), Animation.PlayMode.LOOP_PINGPONG),
                 atlas.findRegion("REDstandnorth"),
                 atlas.findRegion("REDstandwest"),
                 atlas.findRegion("REDstandeast"),
                 atlas.findRegion("REDstandsouth")
         );
         Grass = new Texture("Grass.png");
-        redStandingSouth = new Texture("Red_standing_south.png");
 
         batch = new SpriteBatch();
         map = new TileMap(20,20);

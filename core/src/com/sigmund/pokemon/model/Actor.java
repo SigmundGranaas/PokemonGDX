@@ -19,7 +19,7 @@ public class Actor {
     private Texture redStandingSouth;
     private float walkTimer;
     private boolean moveRequestThisFrame;
-    private float animtime = 0.15f;
+    private float animtime = 0.2f;
     private float animtimer;
     private float animX, animY;
     private AnimationSet animations;
@@ -66,6 +66,7 @@ public class Actor {
     public void update(float delta){
     if (state == ACTOR_STATE.WALKING || state == ACTOR_STATE.JUMPING){
         animtimer += delta;
+        walkTimer += delta;
         animX = Interpolation.linear.apply(sourceX,destX,animtimer/animtime);
         animY = Interpolation.linear.apply(sourceY,destY,animtimer/animtime);
 
