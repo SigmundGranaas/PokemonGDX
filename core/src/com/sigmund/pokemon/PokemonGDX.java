@@ -4,16 +4,17 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.sigmund.pokemon.screen.GameScreen;
 
 public class PokemonGDX extends Game {
 	private AssetManager assetManager;
-
 	private GameScreen screen;
 	
 	@Override
 	public void create () {
 		assetManager = new AssetManager();
+		assetManager.load("/packed/textures.atlas", TextureAtlas.class);
 		assetManager.finishLoading();
 
 		screen = new GameScreen(this);
@@ -26,7 +27,6 @@ public class PokemonGDX extends Game {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		super.render();
 	}
-
 
 	public AssetManager getAssetManager() {
 		return assetManager;

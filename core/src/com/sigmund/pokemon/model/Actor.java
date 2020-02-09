@@ -2,9 +2,11 @@ package com.sigmund.pokemon.model;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.sigmund.pokemon.Settings;
 import com.sigmund.pokemon.screen.GameScreen;
+import com.sigmund.pokemon.utility.AnimationSet;
 
 public class Actor {
     private TileMap map;
@@ -15,9 +17,12 @@ public class Actor {
     private int destX, destY;
     private Animation<Texture> animation;
     private Texture redStandingSouth;
-    private float animtime = 0.3f;
+    private float walkTimer;
+    private boolean moveRequestThisFrame;
+    private float animtime = 0.15f;
     private float animtimer;
     private float animX, animY;
+    private AnimationSet animations;
 
     public float getAnimX() {
         return animX;
@@ -34,7 +39,8 @@ public class Actor {
         this.state = ACTOR_STATE.STANDING;
         this.facing = DIRECTION.SOUTH;
         redStandingSouth = new Texture("Red_standing_south.png");
-        this.animation = new Animation<Texture>(0.1f,redStandingSouth);
+        this.animation = new Animation<Texture>(animtime,redStandingSouth);
+
 
     }
 
@@ -63,15 +69,25 @@ public class Actor {
         animY = Interpolation.linear.apply(sourceY,destY,animtimer/animtime);
 
         if(animtimer > animation.getAnimationDuration()){
+            walkTimer = animtimer-animtime;
             completeMove(facing);
-
+            if(moveRequestThisFrame){
+                requestMove(facing);
+            }else{
+                walkTimer = 0f;
+            }
             }
         }
+    moveRequestThisFrame = false;
     }
 
     public boolean requestMove(DIRECTION dir){
-        if ((x + dir.getDx()) >= (map.getWidth()-1)*Settings.SCALED_TILE_SIZE || (y + dir.getDy() >= (map.getHeight()-1)*Settings.SCALED_TILE_SIZE || ((x + dir.getDx()) < 0 || ((y + dir.getDy()) < 0)))){return false; }
-        if(state == ACTOR_STATE.WALKING){ return false; }
+        if ((x + dir.getDx()) >= (map.getWidth())*Settings.SCALED_TILE_SIZE || (y + dir.getDy() >= (map.getHeight())*Settings.SCALED_TILE_SIZE || ((x + dir.getDx()) < 0 || ((y + dir.getDy()) < 0)))){return false; }
+        if(state == ACTOR_STATE.WALKING){
+            if(facing == dir){
+                moveRequestThisFrame = true;
+            }
+            return false; }
 
         initilaliseMove(dir);
         this.facing = dir;
@@ -92,11 +108,11 @@ public class Actor {
     public boolean completeMove(DIRECTION dir) {
         x = destX;
         y = destY;
-        state = ACTOR_STATE.STANDING;
         this.sourceX = 0;
         this.sourceY = 0;
         this.destX = 0;
         this.destY = 0;
+        state = ACTOR_STATE.STANDING;
         return true;
 
     }
@@ -114,6 +130,15 @@ public class Actor {
 
     public Texture getAnimTexture(){
         return animation.getKeyFrame(animtimer);
+    }
+    public TextureRegion getSPrite(){
+        if(state == ACTOR_STATE.WALKING){
+            return (TextureRegion) animations.getWalking(facing).getKeyFrame(walkTimer);
+        }
+        else if(state == ACTOR_STATE.STANDING){
+            return animations.getStanding(facing);
+        }
+        return animations.getStanding(DIRECTION.SOUTH);
     }
 
 }
