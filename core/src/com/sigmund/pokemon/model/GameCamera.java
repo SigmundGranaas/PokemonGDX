@@ -1,38 +1,25 @@
 package com.sigmund.pokemon.model;
 
-import com.badlogic.gdx.graphics.Camera;
+public class GameCamera{
+    private float positionX = 0f;
+    private float positionY = 0f;
 
-public class GameCamera extends Camera {
-    private int positionX, positionY;
-
-    GameCamera(int positionX, int positionY){
-        this.positionX = positionX;
-        this.positionY = positionY;
+    public GameCamera(){
     }
 
-    public int getPositionX() {
+    public float getPositionX() {
         return positionX;
     }
 
-    public void setPositionX(int positionX) {
+    public void setPositionX(float positionX) {
         this.positionX = positionX;
     }
 
-    public int getPositionY() {
+    public float getPositionY() {
         return positionY;
     }
 
-    public void setPositionY(int positionY) {
+    public void setPositionY(float positionY) {
         this.positionY = positionY;
-    }
-
-    @Override
-    public void update() {
-
-    }
-
-    @Override
-    public void update(boolean updateFrustum) {
-
     }
 }

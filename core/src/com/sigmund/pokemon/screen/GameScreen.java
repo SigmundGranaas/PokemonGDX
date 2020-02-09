@@ -1,5 +1,6 @@
 package com.sigmund.pokemon.screen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,6 +10,7 @@ import com.sigmund.pokemon.PokemonGDX;
 import com.sigmund.pokemon.Settings;
 import com.sigmund.pokemon.controller.PlayerController;
 import com.sigmund.pokemon.model.Actor;
+import com.sigmund.pokemon.model.GameCamera;
 import com.sigmund.pokemon.model.TileMap;
 
 public class GameScreen extends AbstractScreen {
@@ -18,7 +20,7 @@ public class GameScreen extends AbstractScreen {
     private Actor player;
     private SpriteBatch batch;
     private PlayerController controller;
-    private Camera gameCamera;
+    private GameCamera gameCamera;
 
     public GameScreen(PokemonGDX app) {
         super(app);
@@ -29,6 +31,8 @@ public class GameScreen extends AbstractScreen {
         map = new TileMap(20,20);
         player = new Actor(map,0,0);
         controller = new PlayerController(player);
+        gameCamera = new GameCamera();
+
 
     }
 
@@ -57,25 +61,26 @@ public class GameScreen extends AbstractScreen {
         controller.update(delta);
     batch.begin();
     player.update(delta);
-
-    float worldStartX = Gdx.graphics.getWidth()/2;
-    float worldStartY = Gdx.graphics.getHeight()/2;
+    gameCamera.setPositionX(player.getAnimX());
+    gameCamera.setPositionY(player.getAnimY());
+    float worldStartX = Gdx.graphics.getWidth()/2 - gameCamera.getPositionX();
+    float worldStartY = Gdx.graphics.getHeight()/2- gameCamera.getPositionY();
     for(int x = 0; x < map.getWidth(); x++){
         for(int y = 0; y < map.getHeight(); y++){
             batch.draw(Grass,
-                    worldStartX+x*Settings.SCALED_TILE_SIZE - player.getX()+0.5f,
-                    worldStartY+y*Settings.SCALED_TILE_SIZE - player.getY()+0.5f,
+                    worldStartX+x*Settings.SCALED_TILE_SIZE,
+                    worldStartY+y*Settings.SCALED_TILE_SIZE,
                     Settings.SCALED_TILE_SIZE,
                     Settings.SCALED_TILE_SIZE);
         }
+
     }
 
     batch.draw(player.getAnimTexture(),
-            worldStartX+player.getX(),
-            worldStartY+player.getY(),
+            worldStartX+player.getAnimX(),
+            worldStartY+player.getAnimY(),
             Settings.SCALED_TILE_SIZE,
             Settings.SCALED_TILE_SIZE);
-
     batch.end();
 
     }
