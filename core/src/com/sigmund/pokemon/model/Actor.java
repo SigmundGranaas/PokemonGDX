@@ -2,6 +2,7 @@ package com.sigmund.pokemon.model;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.math.Interpolation;
 import com.sigmund.pokemon.Settings;
 import com.sigmund.pokemon.screen.GameScreen;
 
@@ -14,7 +15,17 @@ public class Actor {
     private int destX, destY;
     private Animation<Texture> animation;
     private Texture redStandingSouth;
-    public float animtimer;
+    private float animtime = 0.3f;
+    private float animtimer;
+    private float animX, animY;
+
+    public float getAnimX() {
+        return animX;
+    }
+
+    public float getAnimY() {
+        return animY;
+    }
 
     public Actor(TileMap map, int x, int y){
         this.map = map;
@@ -23,7 +34,7 @@ public class Actor {
         this.state = ACTOR_STATE.STANDING;
         this.facing = DIRECTION.SOUTH;
         redStandingSouth = new Texture("Red_standing_south.png");
-        this.animation = new Animation<Texture>(0.2f,redStandingSouth);
+        this.animation = new Animation<Texture>(0.1f,redStandingSouth);
 
     }
 
@@ -48,6 +59,9 @@ public class Actor {
     public void update(float delta){
     if (state == ACTOR_STATE.WALKING || state == ACTOR_STATE.JUMPING){
         animtimer += delta;
+        animX = Interpolation.linear.apply(sourceX,destX,animtimer/animtime);
+        animY = Interpolation.linear.apply(sourceY,destY,animtimer/animtime);
+
         if(animtimer > animation.getAnimationDuration()){
             completeMove(facing);
 
@@ -56,7 +70,7 @@ public class Actor {
     }
 
     public boolean requestMove(DIRECTION dir){
-        if ((x + dir.getDx()) >= (map.getWidth()-1)*Settings.TILE_SIZE || (y + dir.getDy() >= (map.getHeight()-1)*Settings.TILE_SIZE || ((x + dir.getDx()) < 0 || ((y + dir.getDy()) < 0)))){return false; }
+        if ((x + dir.getDx()) >= (map.getWidth()-1)*Settings.SCALED_TILE_SIZE || (y + dir.getDy() >= (map.getHeight()-1)*Settings.SCALED_TILE_SIZE || ((x + dir.getDx()) < 0 || ((y + dir.getDy()) < 0)))){return false; }
         if(state == ACTOR_STATE.WALKING){ return false; }
 
         initilaliseMove(dir);
